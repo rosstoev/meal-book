@@ -5,13 +5,13 @@ import CategoryCard from "../components/ui/cards/CategoryCard";
 
 function Categories() {
   return (
-      <FlatList
-        numColumns={2}
-        data={CATEGORIES}
-        contentContainerStyle={styles.flatListContainer}
-        renderItem={({ item }) => <CategoryCard category={item} />}
-        keyExtractor={(category) => category.id}
-      />
+    <FlatList
+      numColumns={2}
+      data={CATEGORIES}
+      contentContainerStyle={styles.flatListContainer}
+      renderItem={({ item }) => <CategoryCard category={item} />}
+      keyExtractor={(category) => category.id}
+    />
   );
 }
 

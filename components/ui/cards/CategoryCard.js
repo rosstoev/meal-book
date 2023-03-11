@@ -1,12 +1,19 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Pressable } from "react-native";
 
 function CategoryCard({ category }) {
+  function onPressCategory() {}
+
   return (
     <View
       style={[styles.categoryContainer, { backgroundColor: category.color }]}
       elevation={5}
     >
-      <Text style={styles.categorytTitle}>{category.title}</Text>
+      <Pressable style={styles.pressContainer} onPress={onPressCategory} android_ripple={styles.ripple}>
+        <View>
+            <Text style={styles.categorytTitle}>{category.title}</Text>
+        </View>
+      </Pressable>
+      
     </View>
   );
 }
@@ -19,11 +26,20 @@ const styles = StyleSheet.create({
     width: 150,
     height: 140,
     borderRadius: 6,
+    overflow: 'hidden',
+  },
+  pressContainer: {
+    width: "100%",
+    height: "100%",
     alignItems: "center",
     justifyContent: "center",
+    
   },
   categorytTitle: {
     fontSize: 16,
     fontWeight: "bold",
+  },
+  ripple: {
+    color: "#acacac2d",
   },
 });
