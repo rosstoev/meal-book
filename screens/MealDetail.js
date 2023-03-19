@@ -1,15 +1,27 @@
 import { View, Text, StyleSheet, Image, SectionList } from "react-native";
+import { useLayoutEffect } from "react";
 
 import Title from "../components/ui/Title";
-
 import { MEALS } from "../data/data";
+import IconButton from "../components/ui/IconButton";
 
-function MealDetail() {
-  const selectedMeal = MEALS[1];
+function MealDetail({ route, navigation }) {
+  const { mealId } = route.params;
+  const selectedMeal = MEALS.find((meal) => meal.id == mealId);
+
   const cookingInfo = [
     { title: "ingredients", data: selectedMeal.ingredients },
-    {title: 'steps', data: selectedMeal.steps}
+    { title: "steps", data: selectedMeal.steps },
   ];
+
+  useLayoutEffect(()=>{
+    navigation.setOptions({
+      title: selectedMeal.title,
+      headerRight: () => {
+        return <IconButton icon="star" size={16} color="white" />
+      }
+    })
+  }, [selectedMeal, navigation]);
 
   return (
     <View style={styles.mainContainer}>
@@ -23,22 +35,20 @@ function MealDetail() {
         </Text>
       </View>
       <SectionList
-          style={styles.listContainer}
-          sections={cookingInfo}
-          keyExtractor={(item, index) => item + index}
-          renderItem={({item}) => (
-            <View style={styles.listItemContainer}>
-              <Text style={styles.listItem}>{item}</Text>
-            </View>
-          )}
-          renderSectionHeader={({section: {title}}) => (
-            <View style={styles.listHeaderElement}>
-              <Text style={styles.listHeaderTitle}>{title}</Text>
-            </View>
-            
-          )}
-
-        />
+        style={styles.listContainer}
+        sections={cookingInfo}
+        keyExtractor={(item, index) => item + index}
+        renderItem={({ item }) => (
+          <View style={styles.listItemContainer}>
+            <Text style={styles.listItem}>{item}</Text>
+          </View>
+        )}
+        renderSectionHeader={({ section: { title } }) => (
+          <View style={styles.listHeaderElement}>
+            <Text style={styles.listHeaderTitle}>{title}</Text>
+          </View>
+        )}
+      />
     </View>
   );
 }
@@ -48,6 +58,7 @@ export default MealDetail;
 const styles = StyleSheet.create({
   mainContainer: {
     alignItems: "center",
+    height: "100%",
   },
   image: {
     minWidth: "100%",
@@ -56,34 +67,33 @@ const styles = StyleSheet.create({
   infoContainer: {
     padding: 10,
     alignItems: "center",
-
   },
   title: {
     fontSize: 24,
-    color: "#ffe6dc",
+    color: "#ffffff",
   },
   infoElement: {
     textTransform: "uppercase",
   },
   subTitle: {
-    color: "#fff8f5",
-    fontSize: 12
+    color: "#ffffff",
+    fontSize: 12,
   },
   listContainer: {
     marginHorizontal: 45,
-    marginBottom: 60
+    marginBottom: 60,
   },
   listHeaderElement: {
-    alignItems: "center"
+    alignItems: "center",
   },
   listHeaderTitle: {
     fontSize: 20,
     fontWeight: "bold",
-    color: '#e3b28f'
+    color: "#ffffff",
   },
   listItemContainer: {
     alignItems: "center",
-    backgroundColor: "#e3b28f",
+    backgroundColor: "#F2DF3A",
     borderRadius: 5,
     padding: 5,
     margin: 5,
@@ -91,7 +101,7 @@ const styles = StyleSheet.create({
   listItem: {
     justifyContent: "center",
     textAlign: "center",
-    color: "#47372b",
-    fontWeight: "bold"
-  }
+    color: "#303030",
+    fontWeight: "bold",
+  },
 });

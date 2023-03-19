@@ -1,7 +1,11 @@
 import { View, Text, StyleSheet, Pressable } from "react-native";
 
-function CategoryCard({ category }) {
-  function onPressCategory() {}
+function CategoryCard({ category, navigation }) {
+  function onPressCategory() {
+    navigation.navigate('Meals', {
+      categoryId: category.id,
+    })
+  }
 
   return (
     <View

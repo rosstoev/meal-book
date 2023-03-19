@@ -1,8 +1,12 @@
 import { View, Text, StyleSheet, Image, Pressable } from "react-native";
 
-function MealCard({ meal }) {
+function MealCard({ meal, navigation }) {
 
-    function onPressHandler() {}
+    function onPressHandler() {
+      navigation.navigate('MealDetail', {
+        mealId : meal.id
+      })
+    }
 
   return (
     <View style={styles.mainContainer} elevation={5}>
@@ -27,7 +31,6 @@ export default MealCard;
 
 const styles = StyleSheet.create({
   mainContainer: {
-    flex: 1,
     margin: 20,
     width: 300,
     overflow: "hidden",
