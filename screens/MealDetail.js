@@ -1,5 +1,7 @@
 import { View, Text, StyleSheet, Image, SectionList } from "react-native";
-import { useLayoutEffect } from "react";
+import { useLayoutEffect, useContext } from "react";
+
+import { FavoriteMealsContext } from "../store/context/favoriteMealContext";
 
 import Title from "../components/ui/Title";
 import { MEALS } from "../data/data";
@@ -8,20 +10,37 @@ import IconButton from "../components/ui/IconButton";
 function MealDetail({ route, navigation }) {
   const { mealId } = route.params;
   const selectedMeal = MEALS.find((meal) => meal.id == mealId);
+  const favoriteMealsContext = useContext(FavoriteMealsContext);
+  const isMealFavorite = favoriteMealsContext.ids.includes(mealId);
 
   const cookingInfo = [
     { title: "ingredients", data: selectedMeal.ingredients },
     { title: "steps", data: selectedMeal.steps },
   ];
+  
+  function onPressFavoriteButtonHandler() {
+    if (isMealFavorite) {
+      favoriteMealsContext.removeFavoriteMealId(mealId);
+    } else {
+      favoriteMealsContext.addFavoriteMealId(mealId);
+    }
+  }
 
-  useLayoutEffect(()=>{
+  useLayoutEffect(() => {
     navigation.setOptions({
       title: selectedMeal.title,
       headerRight: () => {
-        return <IconButton icon="star" size={16} color="white" />
-      }
-    })
-  }, [selectedMeal, navigation]);
+        return (
+          <IconButton
+            icon={isMealFavorite ? "star" : "star-outline"}
+            size={16}
+            color="white"
+            onPress={onPressFavoriteButtonHandler}
+          />
+        );
+      },
+    });
+  }, [selectedMeal, navigation, isMealFavorite]);
 
   return (
     <View style={styles.mainContainer}>
